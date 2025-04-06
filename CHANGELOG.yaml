@@ -1,0 +1,18 @@
+changelog:
+- codename: Azure Quasar
+  description: Support Pull Request Updates
+  version:
+    major: 0
+    minor: 1
+    patch: 1
+  released: false
+  changes:
+  - add: This CHANGELOG.yaml
+  - add: Enable review update workflow on synchronize action
+- codename: Quasar
+  description: Initial Release
+  version:
+    major: 0
+    minor: 1
+    patch: 0
+  released: true

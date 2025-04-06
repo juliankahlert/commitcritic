@@ -1,0 +1,83 @@
+#!/usr/bin/env node
+
+import { readFileSync, writeFileSync } from "fs";
+import YAML from "yaml";
+import * as glob from "glob";
+import ignore from "ignore"; // Import the ignore package to respect .gitignore
+
+// --- CLI argument parsing ---
+const args = process.argv.slice(2);
+
+// Show help if no arguments or -h/--help is passed
+if (args.includes("--help") || args.includes("-h") || args.length === 0) {
+  console.log(`
+Usage: format-yaml <files...>
+
+Formats YAML files with flat list formatting (no indent under keys).
+
+You can specify files directly or use wildcards like **/*.yaml.
+
+Options:
+  -h, --help    Show this help message
+
+Examples:
+  format-yaml config.yaml
+  format-yaml "*.yaml"
+  format-yaml "**/*.yml"
+`);
+  process.exit(0);
+}
+
+// --- Load .gitignore if available ---
+const ig = ignore();
+const gitignorePath = ".gitignore";
+
+try {
+  const gitignoreRaw = readFileSync(gitignorePath, "utf8");
+  ig.add(gitignoreRaw); // Add .gitignore rules to the ignore instance
+} catch (err) {
+  // If no .gitignore file is present, continue without filtering
+  if (err.code !== "ENOENT") {
+    console.error(`❌ Error loading .gitignore: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+// --- Process files ---
+const filesPattern = args.join(" "); // Can take multiple patterns (e.g., "*.yaml", "**/*.yml")
+const files = glob.sync(filesPattern, { dot: true }); // Use glob.sync to get files synchronously
+
+if (files.length === 0) {
+  console.log("❌ No YAML files matched the given pattern(s).");
+  process.exit(1);
+}
+
+// --- Filter out ignored files ---
+const filteredFiles = files.filter((file) => !ig.ignores(file)); // Remove files that should be ignored
+
+if (filteredFiles.length === 0) {
+  console.log("❌ No YAML files to process after applying .gitignore.");
+  process.exit(1);
+}
+
+// --- Process and format the valid files ---
+filteredFiles.forEach((file) => {
+  try {
+    const raw = readFileSync(file, "utf8");
+    const parsed = YAML.parse(raw);
+
+    // Create a new YAML document with custom options
+    const doc = new YAML.Document(parsed);
+
+    // Force the block scalar style to 'literal' ('|') for multiline strings
+    const formatted = doc.toString({
+      indentSeq: false,
+      blockScalarStyle: "literal", // Enforce literal block scalar style ('|')
+    });
+
+    writeFileSync(file, formatted, "utf8");
+    console.log(`✅ Formatted ${file}`);
+  } catch (err) {
+    console.error(`❌ Failed to format ${file}:`, err.message);
+  }
+});

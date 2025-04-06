@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 
 import { answer_workflow } from "./answer-workflow";
-import { review_workflow_open } from "./review-workflow";
+import { review_workflow_open, review_workflow_update } from "./review-workflow";
 
 async function entry() {
   const event_name = github.context.eventName;
@@ -31,6 +31,7 @@ async function handle_pr() {
       break;
     case "synchronize":
       core.info("Triggered by a newly pused commits on PR");
+      await review_workflow_update();
       break;
     default:
       /* Don't handle:

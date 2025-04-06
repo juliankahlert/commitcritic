@@ -5,7 +5,7 @@ changelog:
     major: 0
     minor: 1
     patch: 1
-  released: false
+  released: true
   changes:
   - add: This CHANGELOG.yaml
   - add: Enable review update workflow on synchronize action

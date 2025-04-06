@@ -1,0 +1,45 @@
+name: Build and Commit Dist
+on:
+  push:
+    branches:
+    - "*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.BOT_TOKEN }}
+        fetch-depth: 0
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - name: Install dependencies
+      run: npm ci
+    - name: Build TypeScript
+      run: npm run build && npm run package
+    - name: Install jq
+      run: sudo apt-get update && sudo apt-get install -y jq
+    - name: Get bot username and email
+      run: >
+        BOT_USER_INFO=$(curl -s -H "Authorization: token ${{
+        secrets.BOT_TOKEN}}" https://api.github.com/user)
+
+        BOT_USERNAME=$(echo "$BOT_USER_INFO" | jq -r .login) BOT_ID=$(echo
+        "$BOT_USER_INFO" | jq -r .id)
+
+        BOT_EMAIL="${BOT_ID}+${BOT_USERNAME}@users.noreply.github.com"
+
+        echo "BOT_USERNAME=$BOT_USERNAME" >> $GITHUB_ENV
+
+        echo "BOT_EMAIL=$BOT_EMAIL" >> $GITHUB_ENV
+    - name: Commit and push dist/
+      run: |
+        git config user.name "$BOT_USERNAME"
+        git config user.email "$BOT_EMAIL"
+
+        git add -f dist/
+        git diff --cached --quiet || git commit -m "[auto] dist: Update"
+        git push

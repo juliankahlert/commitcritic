@@ -1,0 +1,39 @@
+name: CommitCritic
+description: >
+  Review and discuss pull requests using the OpenAI API. This action helps
+  automate code review discussions by interacting with GitHub pull requests and
+  providing intelligent insights via the OpenAI model. You can have interactive,
+  context-sensitive discussions with the AI on review comments, where the AI
+  will intelligently reply to your follow-up comments, maintaining context
+  throughout the conversation.
+inputs:
+  BOT_TOKEN:
+    description: >
+      GitHub token (usually a bot token or a personal access token) used to
+      interact with the repository. This is required for authentication to make
+      API calls to the GitHub repository.
+    required: true
+  OPENAI_API_KEY:
+    description: |
+      Your OpenAI API key to authenticate and interact with OpenAI models.
+    required: true
+  OPENAI_API_MODEL:
+    description: >
+      The OpenAI model to use for generating responses. Default is
+      `gpt-4o-mini-2024-07-18`. You can specify other available models like
+      `gpt-4o`, etc.
+    required: false
+    default: gpt-4o-mini-2024-07-18
+  exclude:
+    description: >
+      Glob patterns to exclude certain files from diff analysis. This helps to
+      avoid specific files or directories from being included in the review
+      process (e.g., `**/*.md` to exclude markdown files).
+    required: false
+    default: ""
+runs:
+  using: node20
+  main: dist/index.js
+branding:
+  icon: aperture
+  color: green

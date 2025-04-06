@@ -497,6 +497,7 @@ function handle_pr() {
                 break;
             case "synchronize":
                 core.info("Triggered by a newly pused commits on PR");
+                yield (0, review_workflow_1.review_workflow_update)();
                 break;
             default:
                 /* Don't handle:

@@ -1,4 +1,11 @@
 changelog:
+- codename: Emerald Quasar
+  description: Placeholder
+  version:
+    major: 0
+    minor: 1
+    patch: 2
+  released: false
 - codename: Azure Quasar
   description: Support Pull Request Updates
   version:

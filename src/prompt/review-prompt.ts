@@ -9,6 +9,7 @@ export function review_prompt(file: File, chunk: Chunk, upstream: any): string {
   - Provide comments and suggestions ONLY if there is something to improve, otherwise "reviews" should be an empty array.
   - Write the comment in GitHub Markdown format.
   - Use the given description only for the overall context and only comment the code.
+  - IMPORTANT: ONLY comment on issues that would cause the program to fail at runtime, lead to incorrect results, or violate the expected behavior of the application..
   - IMPORTANT: NEVER suggest adding comments to the code.
   
   Review the following code diff in the file "${

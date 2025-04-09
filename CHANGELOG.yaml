@@ -6,6 +6,8 @@ changelog:
     minor: 1
     patch: 2
   released: false
+  changes:
+  - add: Improve review prompt
 - codename: Azure Quasar
   description: Support Pull Request Updates
   version:

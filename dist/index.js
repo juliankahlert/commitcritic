@@ -223,6 +223,7 @@ function answer_workflow() {
             thread: r,
         };
         const prompt = (0, answer_prompt_1.answer_prompt)(discussion);
+        core.info(`----- Prompt -----`);
         core.info(prompt);
         const ai = (0, openai_1.new_openai)(core.getInput("OPENAI_API_MODEL"));
         const answer = yield ai.answer(ai, prompt);

@@ -597,6 +597,7 @@ function review_prompt(file, chunk, upstream) {
   - Provide comments and suggestions ONLY if there is something to improve, otherwise "reviews" should be an empty array.
   - Write the comment in GitHub Markdown format.
   - Use the given description only for the overall context and only comment the code.
+  - IMPORTANT: ONLY comment on issues that would cause the program to fail at runtime, lead to incorrect results, or violate the expected behavior of the application..
   - IMPORTANT: NEVER suggest adding comments to the code.
   
   Review the following code diff in the file "${file.to}" and take the pull request title and description into account when writing the response.

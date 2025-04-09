@@ -58,6 +58,7 @@ export async function answer_workflow() {
   };
 
   const prompt = answer_prompt(discussion);
+  core.info(`----- Prompt -----`);
   core.info(prompt);
 
   const ai: AI = new_openai(core.getInput("OPENAI_API_MODEL"));

@@ -592,7 +592,7 @@ exports.review_prompt = review_prompt;
 const github = __importStar(__nccwpck_require__(724));
 function review_prompt(file, chunk, upstream) {
     return `Your task is to review pull requests. Instructions:
-  - Respond with a valid JSON object.
+  - Respond with a valid JSON object; Make sure all strings are properly escaped.
   - The JSON format must be: {"reviews": [{"line": <line_number>, "body": "<review comment>"}]}
   - Do not wrap the response in markdown code blocks (e.g., \`\`\`json ... \`\`\`).
   - Provide comments and suggestions ONLY if there is something to improve, otherwise "reviews" should be an empty array.

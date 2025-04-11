@@ -3,7 +3,7 @@ import * as github from "../hoster/github";
 
 export function review_prompt(file: File, chunk: Chunk, upstream: any): string {
   return `Your task is to review pull requests. Instructions:
-  - Respond with a valid JSON object.
+  - Respond with a valid JSON object; Make sure all strings are properly escaped.
   - The JSON format must be: {"reviews": [{"line": <line_number>, "body": "<review comment>"}]}
   - Do not wrap the response in markdown code blocks (e.g., \`\`\`json ... \`\`\`).
   - Provide comments and suggestions ONLY if there is something to improve, otherwise "reviews" should be an empty array.
